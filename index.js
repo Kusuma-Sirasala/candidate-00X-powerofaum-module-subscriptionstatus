@@ -3,7 +3,6 @@ const app = express();
 
 app.use(express.json());
 
-// Mock subscription data
 let subscriptions = {
   USER_001: {
     userId: "USER_001",
@@ -13,7 +12,6 @@ let subscriptions = {
   }
 };
 
-// GET: Subscription Status
 app.get('/api/subscription-status', (req, res) => {
   const { userId } = req.query;
   const subscription = subscriptions[userId];
@@ -23,7 +21,6 @@ app.get('/api/subscription-status', (req, res) => {
   res.json({ success: true, subscription });
 });
 
-// POST: Update Subscription
 app.post('/api/update-subscription', (req, res) => {
   const { userId, newPlan, effectiveDate } = req.body;
   subscriptions[userId] = {
@@ -35,8 +32,7 @@ app.post('/api/update-subscription', (req, res) => {
   res.json({ success: true, subscription: subscriptions[userId] });
 });
 
-// NEW: GET /api/update-subscription for browser preview
-app.get('/api/update-subscription', (req, res) => {
+app.get('/api/update-subscription', (req,  res) => {
   res.json({
     success: true,
     subscription: {
@@ -45,8 +41,9 @@ app.get('/api/update-subscription', (req, res) => {
       status: "active",
       effectiveDate: "2025-07-01T00:00:00Z"
     }
+
   });
 });
 
-// Export for Vercel
 module.exports = app;
+
