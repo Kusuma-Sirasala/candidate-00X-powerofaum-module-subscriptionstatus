@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-// Mock subscription data
 let subscriptions = {
   USER_001: {
     userId: "USER_001",
@@ -12,7 +11,6 @@ let subscriptions = {
   }
 };
 
-// GET /api/subscription-status
 app.get('/api/subscription-status', (req, res) => {
   const { userId } = req.query;
   const subscription = subscriptions[userId];
@@ -22,26 +20,16 @@ app.get('/api/subscription-status', (req, res) => {
   res.json({ success: true, subscription });
 });
 
-// POST /api/update-subscription
 app.post('/api/update-subscription', (req, res) => {
   const { userId, newPlan, effectiveDate } = req.body;
-
-  // Update or create subscription
   subscriptions[userId] = {
     userId,
     plan: newPlan,
     status: "active",
     effectiveDate
   };
-
-  res.json({
-    success: true,
-    subscription: subscriptions[userId]
-  });
+  res.json({ success: true, subscription: subscriptions[userId] });
 });
 
-// Start server locally (for testing)
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
-});
-
+// Export app as a Vercel serverless function
+module.exports = app;
